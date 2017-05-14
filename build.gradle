@@ -1,0 +1,47 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlin_version = '1.1.0'
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "io.realm:realm-gradle-plugin:2.3.1"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+
+def gitCount = 'git rev-list master --first-parent --count'.execute([], project.rootDir).text.trim()
+
+//Version information
+def versionMajor = 0
+def versionMinor = 1
+def versionBuild = (gitCount?.trim()) ? gitCount.toInteger() : 0
+
+ext {
+    minSdkVersion = 16
+    targetSdkVersion = 25
+    buildToolsVersion = '25.0.2'
+
+    versionCode = versionMajor * 1000 + versionMinor * 100 + versionBuild
+    versionName = "${versionMajor}.${versionMinor}"
+
+    versions = [
+            support  : '25.2.0'
+    ]
+}
