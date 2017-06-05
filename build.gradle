@@ -18,6 +18,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://maven.google.com' }
     }
 }
 
@@ -42,9 +43,12 @@ ext {
     versionName = "${versionMajor}.${versionMinor}"
 
     versions = [
-            support  : '25.2.0',
-            rxandroid: '2.0.1',
-            rxjava   : '2.0.6',
-            dagger     : '2.9'
+            support     : '25.3.1',
+            support_test: '0.5',
+            lifecycle   : '1.0.0-alpha1',
+            room        : '1.0.0-alpha1',
+            rxandroid   : '2.0.1',
+            rxjava      : '2.0.6',
+            dagger      : '2.9'
     ]
 }
