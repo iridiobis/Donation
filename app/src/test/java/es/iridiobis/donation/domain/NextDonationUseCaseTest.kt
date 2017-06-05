@@ -10,7 +10,7 @@ import org.mockito.Mockito.`when`
 class NextDonationUseCaseTest {
 
     @Test
-    fun next_fourDonations_lastOlderThanTwoMonths() {
+    fun next_fourDonations_aYearFromFirstGreaterThanTwoMonthsFromLast() {
         val repo = mock(DonationRepository::class.java)
         val now = System.currentTimeMillis() - System.currentTimeMillis() % NextDonationUseCase.MILLIS_PER_DAY
         val donations = listOf(
@@ -29,7 +29,7 @@ class NextDonationUseCaseTest {
     }
 
     @Test
-    fun next_fourDonations_lastNewerThanTwoMonths() {
+    fun next_fourDonations_aYearFromFirstSmallerThanTwoMonthsFromLast() {
         val repo = mock(DonationRepository::class.java)
         val now = System.currentTimeMillis() - System.currentTimeMillis() % NextDonationUseCase.MILLIS_PER_DAY
         val donations = listOf(
@@ -67,7 +67,7 @@ class NextDonationUseCaseTest {
 
 
     @Test
-    fun next_lessThanFourDonations_lastNewerOlderThanTwoMonths() {
+    fun next_lessThanFourDonations_lastOlderThanTwoMonths() {
         val repo = mock(DonationRepository::class.java)
         val now = System.currentTimeMillis() - System.currentTimeMillis() % NextDonationUseCase.MILLIS_PER_DAY
         val donations = listOf(
