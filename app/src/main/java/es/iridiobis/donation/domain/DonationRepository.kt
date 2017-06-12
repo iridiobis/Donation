@@ -1,7 +1,7 @@
 package es.iridiobis.donation.domain
 
-import io.reactivex.Observable
+import android.arch.lifecycle.LiveData
 
 interface DonationRepository {
-    fun retrieveLastYearDonations() : Observable<List<Long>>
+    fun loadDonationsSince(date: Long): LiveData<List<Donation>>
 }

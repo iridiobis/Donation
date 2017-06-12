@@ -5,7 +5,7 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import com.google.common.truth.Truth
 import es.iridiobis.donation.domain.Donation
-import es.iridiobis.donation.retrieveValue
+import es.iridiobis.testingcomponents.retrieveValue
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
