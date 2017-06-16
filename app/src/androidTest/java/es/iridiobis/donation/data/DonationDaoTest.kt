@@ -74,6 +74,18 @@ class DonationDaoTest {
         Truth.assertThat(donations).isNotEmpty()
     }
 
+    @Test
+    fun loadLastDonation_noDonations() {
+        val donation = donationDao.loadLastDonation().retrieveValue()
+        Truth.assertThat(donation).isNull()
+    }
+
+    @Test
+    fun loadLastDonation_twoYearDonations() {
+        val now = setUpDonationsInTwoYears()
+        val donation = donationDao.loadLastDonation().retrieveValue()
+        Truth.assertThat(donation.date).isEqualTo(now - 1 * MILLIS_PER_MONTH)
+    }
 
     private fun setUpDonationsInTwoYears(): Long {
         val now = System.currentTimeMillis()

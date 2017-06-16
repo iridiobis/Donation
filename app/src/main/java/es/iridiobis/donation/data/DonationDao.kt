@@ -22,4 +22,7 @@ interface DonationDao {
     @Query("SELECT * FROM donation WHERE date > :arg0 - :arg1 AND date < :arg0 + :arg1")
     fun loadDonationsInRange(date: Long, range: Long): LiveData<List<Donation>>
 
+    @Query("SELECT * FROM donation ORDER BY date DESC LIMIT 1")
+    fun loadLastDonation() : LiveData<Donation>
+
 }
