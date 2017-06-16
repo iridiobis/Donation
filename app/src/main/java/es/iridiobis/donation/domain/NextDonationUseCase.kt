@@ -6,12 +6,6 @@ import javax.inject.Inject
 
 class NextDonationUseCase @Inject constructor(donationRepository: DonationRepository) {
 
-    companion object {
-        val MILLIS_PER_YEAR = 31536000000L
-        val MILLIS_PER_TWO_MONTHS = 5184000000L
-        val MILLIS_PER_DAY = 86400000L
-    }
-
     val nextDonation: LiveData<Donation>
 
     init {
