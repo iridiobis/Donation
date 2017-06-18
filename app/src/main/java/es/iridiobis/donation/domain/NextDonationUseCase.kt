@@ -1,36 +1,31 @@
 package es.iridiobis.donation.domain
 
-import com.jakewharton.rxrelay2.BehaviorRelay
-import io.reactivex.Observable
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
+import javax.inject.Inject
 
+class NextDonationUseCase @Inject constructor(donationRepository: DonationRepository) {
 
-class NextDonationUseCase constructor(val donationRepository: DonationRepository) {
-
-    companion object {
-        val MILLIS_PER_YEAR = 31536000000L
-        val MILLIS_PER_TWO_MONTHS = 5184000000L
-        val MILLIS_PER_DAY = 86400000L
-    }
-
-    val nextRelay: BehaviorRelay<Long> = BehaviorRelay.create()
+    val nextDonation: LiveData<Donation>
 
     init {
-        donationRepository.retrieveLastYearDonations()
-                .subscribe {
-                    lastDonations ->
-                    if (lastDonations.size > 3)
-                        nextRelay.accept(Math.max(lastDonations[3] + MILLIS_PER_TWO_MONTHS, lastDonations[0] + MILLIS_PER_YEAR))
-                    else if (lastDonations.isEmpty())
-                        nextRelay.accept(removeExtraMillis(System.currentTimeMillis()))
-                    else
-                        nextRelay.accept(Math.max(lastDonations.last() + MILLIS_PER_TWO_MONTHS, removeExtraMillis(System.currentTimeMillis())))
-                }
+        nextDonation = Transformations.map(
+                donationRepository.loadDonationsSince(System.currentTimeMillis() - MILLIS_PER_YEAR),
+                { lastDonations -> calculateNextDonation(lastDonations) })
     }
 
-    fun nextDonation(): Observable<Long> {
-        return nextRelay
-    }
+    fun nextDonation(): LiveData<Donation> = nextDonation
 
     private fun removeExtraMillis(millis: Long) = millis - millis % MILLIS_PER_DAY
+
+    private fun calculateNextDonation(lastDonations: List<Donation>): Donation {
+        val nextDate = if (lastDonations.size > 3)
+            Math.max(lastDonations[3].date + MILLIS_PER_TWO_MONTHS, lastDonations[0].date + MILLIS_PER_YEAR)
+        else if (lastDonations.isEmpty())
+            removeExtraMillis(System.currentTimeMillis())
+        else
+            Math.max(lastDonations.last().date + MILLIS_PER_TWO_MONTHS, removeExtraMillis(System.currentTimeMillis()))
+        return Donation(nextDate)
+    }
 
 }

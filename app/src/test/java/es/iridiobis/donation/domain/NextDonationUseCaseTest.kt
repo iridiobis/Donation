@@ -1,102 +1,100 @@
 package es.iridiobis.donation.domain
 
-import io.reactivex.Observable
-import io.reactivex.observers.TestObserver
+import android.arch.core.executor.testing.InstantTaskExecutorRule;
+import com.google.common.truth.Truth
+import es.iridiobis.testingcomponents.asLiveData
+import es.iridiobis.testingcomponents.retrieveValue
 import org.junit.Test
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.*
+import org.junit.Rule
+
+
 
 
 class NextDonationUseCaseTest {
 
+    @get:Rule
+    val instantExecutorRule = InstantTaskExecutorRule()
+
     @Test
     fun next_fourDonations_aYearFromFirstGreaterThanTwoMonthsFromLast() {
         val repo = mock(DonationRepository::class.java)
-        val now = System.currentTimeMillis() - System.currentTimeMillis() % NextDonationUseCase.MILLIS_PER_DAY
+        val now = System.currentTimeMillis() - System.currentTimeMillis() % MILLIS_PER_DAY
         val donations = listOf(
-                now - NextDonationUseCase.MILLIS_PER_TWO_MONTHS * 5,
-                now - NextDonationUseCase.MILLIS_PER_TWO_MONTHS * 4,
-                now - NextDonationUseCase.MILLIS_PER_TWO_MONTHS * 3,
-                now - NextDonationUseCase.MILLIS_PER_TWO_MONTHS * 2)
-        `when`(repo.retrieveLastYearDonations()).thenReturn(Observable.just(donations))
+                Donation(now - MILLIS_PER_TWO_MONTHS * 5),
+                Donation(now - MILLIS_PER_TWO_MONTHS * 4),
+                Donation(now - MILLIS_PER_TWO_MONTHS * 3),
+                Donation(now - MILLIS_PER_TWO_MONTHS * 2))
+        `when`(repo.loadDonationsSince(ArgumentMatchers.anyLong())).thenReturn(donations.asLiveData())
         val useCase = NextDonationUseCase(repo)
 
-        val testObserver : TestObserver<Long> = TestObserver()
-        useCase.nextDonation().subscribe(testObserver)
+        val next = useCase.nextDonation.retrieveValue()
 
-        testObserver.assertNoErrors()
-        testObserver.assertValue(now - NextDonationUseCase.MILLIS_PER_TWO_MONTHS * 5 + NextDonationUseCase.MILLIS_PER_YEAR)
+        Truth.assertThat(now - MILLIS_PER_TWO_MONTHS * 5 + MILLIS_PER_YEAR).isEqualTo(next.date)
     }
 
     @Test
     fun next_fourDonations_aYearFromFirstSmallerThanTwoMonthsFromLast() {
         val repo = mock(DonationRepository::class.java)
-        val now = System.currentTimeMillis() - System.currentTimeMillis() % NextDonationUseCase.MILLIS_PER_DAY
+        val now = System.currentTimeMillis() - System.currentTimeMillis() % MILLIS_PER_DAY
         val donations = listOf(
-                now - NextDonationUseCase.MILLIS_PER_YEAR + NextDonationUseCase.MILLIS_PER_DAY,//a year ago minus a day
-                now - NextDonationUseCase.MILLIS_PER_TWO_MONTHS * 4,
-                now - NextDonationUseCase.MILLIS_PER_TWO_MONTHS * 3,
-                now - NextDonationUseCase.MILLIS_PER_TWO_MONTHS / 2)//a month ago
-        `when`(repo.retrieveLastYearDonations()).thenReturn(Observable.just(donations))
+                Donation(now - MILLIS_PER_YEAR + MILLIS_PER_DAY),//a year ago minus a day
+                Donation(now - MILLIS_PER_TWO_MONTHS * 4),
+                Donation(now - MILLIS_PER_TWO_MONTHS * 3),
+                Donation(now - MILLIS_PER_TWO_MONTHS / 2))//a month ago
+        `when`(repo.loadDonationsSince(ArgumentMatchers.anyLong())).thenReturn(donations.asLiveData())
         val useCase = NextDonationUseCase(repo)
 
-        val testObserver : TestObserver<Long> = TestObserver()
-        useCase.nextDonation().subscribe(testObserver)
+        val next = useCase.nextDonation.retrieveValue()
 
-        testObserver.assertNoErrors()
-        testObserver.assertValue(now + NextDonationUseCase.MILLIS_PER_TWO_MONTHS / 2)
+        Truth.assertThat(now + MILLIS_PER_TWO_MONTHS / 2).isEqualTo(next.date)
     }
 
     @Test
     fun next_lessThanFourDonations_lastNewerThanTwoMonths() {
         val repo = mock(DonationRepository::class.java)
-        val now = System.currentTimeMillis() - System.currentTimeMillis() % NextDonationUseCase.MILLIS_PER_DAY
+        val now = System.currentTimeMillis() - System.currentTimeMillis() % MILLIS_PER_DAY
         val donations = listOf(
-                now - NextDonationUseCase.MILLIS_PER_TWO_MONTHS * 4,
-                now - NextDonationUseCase.MILLIS_PER_TWO_MONTHS * 3,
-                now - NextDonationUseCase.MILLIS_PER_TWO_MONTHS / 2)//a month ago
-        `when`(repo.retrieveLastYearDonations()).thenReturn(Observable.just(donations))
+                Donation(now - MILLIS_PER_TWO_MONTHS * 4),
+                Donation(now - MILLIS_PER_TWO_MONTHS * 3),
+                Donation(now - MILLIS_PER_TWO_MONTHS / 2))//a month ago
+        `when`(repo.loadDonationsSince(ArgumentMatchers.anyLong())).thenReturn(donations.asLiveData())
         val useCase = NextDonationUseCase(repo)
 
-        val testObserver : TestObserver<Long> = TestObserver()
-        useCase.nextDonation().subscribe(testObserver)
+        val next = useCase.nextDonation.retrieveValue()
 
-        testObserver.assertNoErrors()
-        testObserver.assertValue(now + NextDonationUseCase.MILLIS_PER_TWO_MONTHS / 2)
+        Truth.assertThat(now + MILLIS_PER_TWO_MONTHS / 2).isEqualTo(next.date)
     }
 
 
     @Test
     fun next_lessThanFourDonations_lastOlderThanTwoMonths() {
         val repo = mock(DonationRepository::class.java)
-        val now = System.currentTimeMillis() - System.currentTimeMillis() % NextDonationUseCase.MILLIS_PER_DAY
+        val now = System.currentTimeMillis() - System.currentTimeMillis() % MILLIS_PER_DAY
         val donations = listOf(
-                now - NextDonationUseCase.MILLIS_PER_TWO_MONTHS * 4,
-                now - NextDonationUseCase.MILLIS_PER_TWO_MONTHS * 3,
-                now - NextDonationUseCase.MILLIS_PER_TWO_MONTHS * 2)
-        `when`(repo.retrieveLastYearDonations()).thenReturn(Observable.just(donations))
+                Donation(now - MILLIS_PER_TWO_MONTHS * 4),
+                Donation(now - MILLIS_PER_TWO_MONTHS * 3),
+                Donation(now - MILLIS_PER_TWO_MONTHS * 2))
+        `when`(repo.loadDonationsSince(ArgumentMatchers.anyLong())).thenReturn(donations.asLiveData())
         val useCase = NextDonationUseCase(repo)
 
-        val testObserver : TestObserver<Long> = TestObserver()
-        useCase.nextDonation().subscribe(testObserver)
+        val next = useCase.nextDonation.retrieveValue()
 
-        testObserver.assertNoErrors()
-        testObserver.assertValue(now)
+        Truth.assertThat(now).isEqualTo(next.date)
     }
 
     @Test
     fun next_noDonation() {
         val repo = mock(DonationRepository::class.java)
-        val now = System.currentTimeMillis() - System.currentTimeMillis() % NextDonationUseCase.MILLIS_PER_DAY
-        val donations = ArrayList<Long>()
-        `when`(repo.retrieveLastYearDonations()).thenReturn(Observable.just(donations))
+        val now = System.currentTimeMillis() - System.currentTimeMillis() % MILLIS_PER_DAY
+        val donations = ArrayList<Donation>()
+        `when`(repo.loadDonationsSince(ArgumentMatchers.anyLong())).thenReturn(donations.asLiveData())
         val useCase = NextDonationUseCase(repo)
 
-        val testObserver : TestObserver<Long> = TestObserver()
-        useCase.nextDonation().subscribe(testObserver)
+        val next = useCase.nextDonation.retrieveValue()
 
-        testObserver.assertNoErrors()
-        testObserver.assertValue(now)
+        Truth.assertThat(now).isEqualTo(next.date)
     }
 
 }

@@ -9,6 +9,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:2.3.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "io.realm:realm-gradle-plugin:2.3.1"
+        classpath 'com.trickyandroid:jacoco-everywhere:0.2.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -18,6 +19,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://maven.google.com' }
     }
 }
 
@@ -34,7 +36,7 @@ def versionMinor = 1
 def versionBuild = (gitCount?.trim()) ? gitCount.toInteger() : 0
 
 ext {
-    minSdkVersion = 16
+    minSdkVersion = 21
     targetSdkVersion = 25
     buildToolsVersion = '25.0.2'
 
@@ -42,9 +44,12 @@ ext {
     versionName = "${versionMajor}.${versionMinor}"
 
     versions = [
-            support  : '25.2.0',
-            rxandroid: '2.0.1',
-            rxjava   : '2.0.6',
-            dagger     : '2.9'
+            support     : '25.3.1',
+            support_test: '0.5',
+            lifecycle   : '1.0.0-alpha3',
+            room        : '1.0.0-alpha3',
+            rxandroid   : '2.0.1',
+            rxjava      : '2.0.6',
+            dagger      : '2.9'
     ]
 }
