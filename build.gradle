@@ -37,19 +37,19 @@ def versionBuild = (gitCount?.trim()) ? gitCount.toInteger() : 0
 
 ext {
     minSdkVersion = 21
-    targetSdkVersion = 25
+    targetSdkVersion = 26
     buildToolsVersion = '25.0.2'
 
     versionCode = versionMajor * 1000 + versionMinor * 100 + versionBuild
     versionName = "${versionMajor}.${versionMinor}"
 
     versions = [
-            support     : '25.3.1',
-            support_test: '0.5',
-            lifecycle   : '1.0.0-alpha3',
-            room        : '1.0.0-alpha3',
+            support     : '26.1.0',
+            support_test: '1.0.1',
+            lifecycle   : '1.0.0-alpha9-1',
+            room        : '1.0.0-alpha9-1',
             rxandroid   : '2.0.1',
             rxjava      : '2.0.6',
-            dagger      : '2.9'
+            dagger      : '2.11'
     ]
 }
