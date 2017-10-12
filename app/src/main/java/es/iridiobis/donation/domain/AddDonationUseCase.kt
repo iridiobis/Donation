@@ -4,9 +4,15 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
 import javax.inject.Inject
 
-
+/**
+ * Logic to add a new donation. The result is a {@see NewDonationResult}, which can be successful
+ * or not. If it is unsuccessful, it will provide a list of donations that make the donation invalid.
+ */
 class AddDonationUseCase @Inject constructor(val donationRepository: DonationRepository) {
 
+    /**
+     * Adds the provided donation to the donations repository.
+     */
     fun add(donation : Donation) : LiveData<NewDonationResult> {
         return Transformations.map(
                 donationRepository.loadDonationsInRange(donation.date, MILLIS_PER_TWO_MONTHS),
