@@ -1,5 +1,8 @@
 package es.iridiobis.donation.presentation
 
+import android.arch.lifecycle.LifecycleActivity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -11,8 +14,18 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import es.iridiobis.donation.R
+import android.arch.lifecycle.ViewModelProviders
+import android.test.ApplicationTestCase
+import android.widget.TextView
+import es.iridiobis.donation.DonationApp
+import es.iridiobis.donation.domain.Donation
+import es.iridiobis.temporizador.core.di.ComponentProvider
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+class MainActivity : LifecycleActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    @Inject lateinit var viewModelFactory : ViewModelProvider.Factory
 
     override fun onBackPressed() {
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -42,9 +55,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (application as DonationApp).getComponent().inject(this)
         setContentView(R.layout.activity_main)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        //setSupportActionBar(toolbar)
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener { view ->
@@ -60,5 +74,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
+
+        attachToViewModel()
+    }
+
+    private fun attachToViewModel() {
+        val model = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        model.nextDonation.observe(this, Observer { nextDonation -> updateNextDonation(nextDonation!!) })
+    }
+
+    private fun updateNextDonation(donation : Donation) {
+        val nextDonationView = findViewById<TextView>(R.id.main_next_donation_date)
+        nextDonationView.text = donation.date.toString()
     }
 }
