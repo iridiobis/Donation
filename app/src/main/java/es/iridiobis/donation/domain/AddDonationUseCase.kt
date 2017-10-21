@@ -2,6 +2,8 @@ package es.iridiobis.donation.domain
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
@@ -22,6 +24,9 @@ class AddDonationUseCase @Inject constructor(val donationRepository: DonationRep
     private fun addDonation(donation : Donation, donationsInRange : List<Donation>) : DonationResult {
         if (donationsInRange.isEmpty()) {
             donationRepository.addDonation(donation)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe()
         }
         return DonationResult(donationsInRange.isEmpty(), donationsInRange)
     }

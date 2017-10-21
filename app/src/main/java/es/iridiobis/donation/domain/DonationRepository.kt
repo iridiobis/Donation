@@ -1,6 +1,7 @@
 package es.iridiobis.donation.domain
 
 import android.arch.lifecycle.LiveData
+import io.reactivex.Completable
 
 interface DonationRepository {
 
@@ -17,6 +18,6 @@ interface DonationRepository {
     /**
      * Add a donation to the repository
      */
-    fun addDonation(donation : Donation)
+    fun addDonation(donation : Donation) : Completable
 
 }
