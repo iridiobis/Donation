@@ -5,4 +5,4 @@ package es.iridiobis.donation.domain
  * will provide the list of donation entries that make the new entry invalid.
  *
  */
-class NewDonationResult(val successful : Boolean, val donations : List<Donation>)
+class DonationResult(val successful : Boolean, val donations : List<Donation>)

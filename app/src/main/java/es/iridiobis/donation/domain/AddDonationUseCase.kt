@@ -5,7 +5,7 @@ import android.arch.lifecycle.Transformations
 import javax.inject.Inject
 
 /**
- * Logic to add a new donation. The result is a {@see NewDonationResult}, which can be successful
+ * Logic to add a new donation. The result is a {@see DonationResult}, which can be successful
  * or not. If it is unsuccessful, it will provide a list of donations that make the donation invalid.
  */
 class AddDonationUseCase @Inject constructor(val donationRepository: DonationRepository) {
@@ -13,17 +13,17 @@ class AddDonationUseCase @Inject constructor(val donationRepository: DonationRep
     /**
      * Adds the provided donation to the donations repository.
      */
-    fun add(donation : Donation) : LiveData<NewDonationResult> {
+    fun add(donation : Donation) : LiveData<DonationResult> {
         return Transformations.map(
                 donationRepository.loadDonationsInRange(donation.date, MILLIS_PER_TWO_MONTHS),
                 { donationsInRange -> addDonation(donation, donationsInRange) })
     }
 
-    private fun addDonation(donation : Donation, donationsInRange : List<Donation>) : NewDonationResult {
+    private fun addDonation(donation : Donation, donationsInRange : List<Donation>) : DonationResult {
         if (donationsInRange.isEmpty()) {
             donationRepository.addDonation(donation)
         }
-        return NewDonationResult(donationsInRange.isEmpty(), donationsInRange)
+        return DonationResult(donationsInRange.isEmpty(), donationsInRange)
     }
 
 }
