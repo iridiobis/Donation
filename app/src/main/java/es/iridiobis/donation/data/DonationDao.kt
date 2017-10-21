@@ -16,10 +16,10 @@ interface DonationDao {
     @Query("SELECT * FROM donation")
     fun loadDonations(): LiveData<List<Donation>>
 
-    @Query("SELECT * FROM donation WHERE date > :arg0")
+    @Query("SELECT * FROM donation WHERE date > :date")
     fun loadDonationsSince(date: Long): LiveData<List<Donation>>
 
-    @Query("SELECT * FROM donation WHERE date > :arg0 - :arg1 AND date < :arg0 + :arg1")
+    @Query("SELECT * FROM donation WHERE date > :date - :range AND date < :date + :range")
     fun loadDonationsInRange(date: Long, range: Long): LiveData<List<Donation>>
 
     @Query("SELECT * FROM donation ORDER BY date DESC LIMIT 1")
