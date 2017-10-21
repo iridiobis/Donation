@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/ddp_title"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+        android:textColor="#fff"/>
+
+    <DatePicker
+        android:id="@+id/ddp_date_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:calendarViewShown="false"
+        android:spinnersShown="true"/>
+
+    <TextView
+        android:id="@+id/ddp_error_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="Fecha inválida"
+        android:textColor="@color/colorAccent"/>
+
+</LinearLayout>
