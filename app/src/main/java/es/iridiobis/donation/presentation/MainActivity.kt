@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
 import es.iridiobis.donation.DonationApp
 import es.iridiobis.donation.R
 import es.iridiobis.donation.domain.Donation
@@ -27,7 +28,7 @@ class MainActivity : LifecycleActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onDonation(date: Long) {
-
+        viewModel.add(date).observe(this, Observer { result -> result?.let { if(!result.successful) Toast.makeText(this, R.string.main_insertion_error, Toast.LENGTH_SHORT).show() }  })
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory

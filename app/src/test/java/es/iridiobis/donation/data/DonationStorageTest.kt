@@ -3,6 +3,7 @@ package es.iridiobis.donation.data
 import android.arch.lifecycle.LiveData
 import com.google.common.truth.Truth
 import es.iridiobis.donation.domain.Donation
+import io.reactivex.subscribers.TestSubscriber
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
@@ -46,7 +47,7 @@ class DonationStorageTest {
     fun addDonation_default() {
         val donation = Donation(1L)
 
-        donationStorage.addDonation(donation)
+        donationStorage.addDonation(donation).subscribe()
 
         Mockito.verify(donationDao).insertDonation(donation)
     }
