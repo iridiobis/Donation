@@ -27,7 +27,7 @@ class MainActivity : LifecycleActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onDonation(date: Long) {
-
+        viewModel.add(date).observe(this, Observer {  })
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
