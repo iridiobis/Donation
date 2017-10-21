@@ -7,7 +7,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -22,9 +21,18 @@ import java.util.Date
 import javax.inject.Inject
 
 
-class MainActivity : LifecycleActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : LifecycleActivity(), NavigationView.OnNavigationItemSelectedListener, DonationDatePicker.DonationDateListener {
+    override fun onDateChanged(date: Long) {
+        viewModel.verify(date).observe(this, Observer { result -> donationDatePicker?.showInvalideDate(!(result!!.successful)) })
+    }
+
+    override fun onDonation(date: Long) {
+
+    }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var viewModel : MainViewModel
+    var donationDatePicker : DonationDatePicker? = null
 
     override fun onBackPressed() {
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -60,9 +68,9 @@ class MainActivity : LifecycleActivity(), NavigationView.OnNavigationItemSelecte
         //setSupportActionBar(toolbar)
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        fab.setOnClickListener {
+            donationDatePicker = DonationDatePicker.init(this)
+            donationDatePicker!!.show(fragmentManager, "Date picker")
         }
 
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -78,8 +86,8 @@ class MainActivity : LifecycleActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun attachToViewModel() {
-        val model = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
-        model.nextDonation.observe(this, Observer { nextDonation -> updateNextDonation(nextDonation!!) })
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel.nextDonation.observe(this, Observer { nextDonation -> updateNextDonation(nextDonation!!) })
     }
 
     private fun updateNextDonation(donation: Donation) {

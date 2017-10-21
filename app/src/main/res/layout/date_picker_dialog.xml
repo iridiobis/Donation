@@ -30,8 +30,8 @@
         android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
         android:visibility="gone"
+        android:text="@string/ddp_invalid_date"
         tools:visibility="visible"
-        tools:text="Fecha inválida"
         android:textColor="@color/colorAccent"/>
 
 </LinearLayout>

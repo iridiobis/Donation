@@ -4,8 +4,9 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.app.DialogFragment
 import android.os.Bundle
+import android.view.View
 import android.widget.DatePicker
-import android.widget.Toast
+import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import es.iridiobis.donation.R
@@ -30,6 +31,7 @@ class DonationDatePicker : DialogFragment(), DatePicker.OnDateChangedListener {
     var donationDate = System.currentTimeMillis()
 
     @BindView(R.id.ddp_date_picker) lateinit var datePicker: DatePicker
+    @BindView(R.id.ddp_error_message) lateinit var errorView: TextView
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val root = activity.layoutInflater.inflate(R.layout.date_picker_dialog, null, false)
@@ -48,7 +50,11 @@ class DonationDatePicker : DialogFragment(), DatePicker.OnDateChangedListener {
         listener.onDateChanged(donationDate)
     }
 
-    private fun extractCalendar() : Calendar {
+    fun showInvalideDate(invalid: Boolean) {
+        errorView.visibility = if (invalid) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun extractCalendar(): Calendar {
         val calendar = GregorianCalendar()
         calendar.timeInMillis = arguments.getLong(DATE)
         return calendar
@@ -59,7 +65,7 @@ class DonationDatePicker : DialogFragment(), DatePicker.OnDateChangedListener {
     }
 
     interface DonationDateListener {
-        fun onDateChanged(date : Long)
+        fun onDateChanged(date: Long)
         fun onDonation(date: Long)
     }
 
