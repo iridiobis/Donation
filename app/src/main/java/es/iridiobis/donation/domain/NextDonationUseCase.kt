@@ -4,6 +4,9 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
 import javax.inject.Inject
 
+/**
+ * Use case to retrieve the closest date available for donation
+ */
 class NextDonationUseCase @Inject constructor(donationRepository: DonationRepository) {
 
     val nextDonation: LiveData<Donation>

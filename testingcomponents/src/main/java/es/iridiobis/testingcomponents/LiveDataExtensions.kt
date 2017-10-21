@@ -4,6 +4,10 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.Observer
 
+/**
+ * Retrieves the NON NULL value of a live data. Use only on live data instances that are gonna
+ * emmit a non null value.
+ */
 @Throws(InterruptedException::class)
 fun <T> LiveData<T>.retrieveValue(): T {
     val data = arrayOfNulls<Any>(1)
@@ -18,6 +22,8 @@ fun <T> LiveData<T>.retrieveValue(): T {
     this.observeForever(observer)
     latch.await(2, java.util.concurrent.TimeUnit.SECONDS)
 
+    @Suppress("UNCHECKED_CAST")
+    //Set on onChanged, it is always T
     return data[0] as T
 }
 
