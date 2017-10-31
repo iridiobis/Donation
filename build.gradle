@@ -1,14 +1,15 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.1.0'
+    ext.kotlin_version = '1.1.51'
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.android.tools.build:gradle:2.3.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "io.realm:realm-gradle-plugin:2.3.1"
+        classpath 'com.trickyandroid:jacoco-everywhere:0.2.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -18,6 +19,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://maven.google.com' }
     }
 }
 
@@ -34,14 +36,20 @@ def versionMinor = 1
 def versionBuild = (gitCount?.trim()) ? gitCount.toInteger() : 0
 
 ext {
-    minSdkVersion = 16
-    targetSdkVersion = 25
+    minSdkVersion = 21
+    targetSdkVersion = 26
     buildToolsVersion = '25.0.2'
 
     versionCode = versionMajor * 1000 + versionMinor * 100 + versionBuild
     versionName = "${versionMajor}.${versionMinor}"
 
     versions = [
-            support  : '25.2.0'
+            support     : '26.1.0',
+            support_test: '1.0.1',
+            lifecycle   : '1.0.0-alpha9-1',
+            room        : '1.0.0-alpha9-1',
+            rxandroid   : '2.0.1',
+            rxjava      : '2.0.6',
+            dagger      : '2.11'
     ]
 }
