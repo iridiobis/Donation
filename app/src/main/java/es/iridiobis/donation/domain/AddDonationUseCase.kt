@@ -12,6 +12,14 @@ import javax.inject.Inject
  */
 class AddDonationUseCase @Inject constructor(val donationRepository: DonationRepository) {
 
+    suspend fun suspendedAdd(donation: Donation) : DonationResult {
+        val inRange = donationRepository.loadDonationsInRangeSync(donation.date, MILLIS_PER_TWO_MONTHS)
+        if (inRange.isEmpty()) {
+            donationRepository.addDonationSync(donation)
+        }
+        return DonationResult(inRange.isEmpty(), inRange)
+    }
+
     /**
      * Adds the provided donation to the donations repository.
      */

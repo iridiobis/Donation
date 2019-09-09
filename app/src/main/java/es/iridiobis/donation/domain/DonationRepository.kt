@@ -15,9 +15,13 @@ interface DonationRepository {
      */
     fun loadDonationsInRange(date: Long, range: Long): LiveData<List<Donation>>
 
+    fun loadDonationsInRangeSync(date: Long, range: Long): List<Donation>
+
     /**
      * Add a donation to the repository
      */
     fun addDonation(donation : Donation) : Completable
+
+    fun addDonationSync(donation: Donation)
 
 }

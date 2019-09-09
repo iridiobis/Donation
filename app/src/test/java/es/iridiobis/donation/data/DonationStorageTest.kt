@@ -2,8 +2,11 @@ package es.iridiobis.donation.data
 
 import androidx.lifecycle.LiveData
 import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
+import com.nhaarman.mockitokotlin2.verify
 import es.iridiobis.donation.domain.Donation
 import io.reactivex.subscribers.TestSubscriber
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
@@ -44,11 +47,32 @@ class DonationStorageTest {
     }
 
     @Test
+    fun `loadDonationInRange should return the donations in the range`() {
+        val date = 1L
+        val range = 2L
+        val expectedResult = emptyList<Donation>()
+        Mockito.`when`(donationDao.loadDonationsInRangeSync(date, range)).thenReturn(expectedResult)
+
+        val result = donationStorage.loadDonationsInRangeSync(date, range)
+
+        assertThat(result).isEqualTo(expectedResult)
+    }
+
+    @Test
     fun addDonation_default() {
         val donation = Donation(1L)
 
         donationStorage.addDonation(donation).subscribe()
 
         Mockito.verify(donationDao).insertDonation(donation)
+    }
+
+    @Test
+    fun `addDonation should insert the donation`() {
+        val donation = Donation(1L)
+
+        donationStorage.addDonationSync(donation)
+
+        verify(donationDao).insertDonation(donation)
     }
 }
