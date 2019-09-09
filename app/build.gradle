@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'jacoco-everywhere'
 
 android {
     compileSdkVersion rootProject.targetSdkVersion
@@ -26,46 +25,49 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:$versions.support"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
-    compile "io.reactivex.rxjava2:rxjava:$versions.rxjava"
-    compile "com.google.dagger:dagger:$versions.dagger"
+    implementation "com.android.support:appcompat-v7:$versions.support"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
+    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
+    implementation "com.google.dagger:dagger:$versions.dagger"
     kapt "com.google.dagger:dagger-compiler:$versions.dagger"
-    compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.1'
-    compile "com.android.support:design:$versions.support"
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation "com.android.support:design:$versions.support"
 
-    compile 'com.jakewharton:butterknife:8.8.0'
+    implementation 'com.jakewharton:butterknife:8.8.0'
     kapt "com.jakewharton:butterknife-compiler:8.8.0"
 
     //Room
-    compile "android.arch.persistence.room:runtime:$versions.room"
+    implementation "android.arch.persistence.room:runtime:$versions.room"
     kapt "android.arch.persistence.room:compiler:$versions.room"
 
     //Android Architecture Components: lifecycle, live data, view model
-    compile "android.arch.lifecycle:runtime:$versions.lifecycle"
-    compile "android.arch.lifecycle:extensions:$versions.lifecycle"
+    implementation "android.arch.lifecycle:runtime:$versions.lifecycle"
+    implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
     kapt "android.arch.lifecycle:compiler:$versions.lifecycle"
 
-    androidTestCompile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    androidTestCompile "com.android.support:support-annotations:$versions.support"
-    androidTestCompile "com.android.support.test:runner:$versions.support_test"
-    androidTestCompile "com.android.support.test:rules:$versions.support_test"
-    androidTestCompile "android.arch.persistence.room:testing:$versions.room"
-    androidTestCompile 'org.mockito:mockito-android:2.7.22'
-    androidTestCompile 'com.google.truth:truth:0.33'
-    androidTestCompile project(":testingcomponents")
+    androidTestImplementation "com.android.support:support-annotations:$versions.support"
+    androidTestImplementation "com.android.support.test:runner:$versions.support_test"
+    androidTestImplementation "com.android.support.test:rules:$versions.support_test"
+    androidTestImplementation "android.arch.persistence.room:testing:$versions.room"
+    androidTestImplementation 'org.mockito:mockito-android:2.7.22'
+    androidTestImplementation 'com.google.truth:truth:0.33'
+    androidTestImplementation project(":testingcomponents")
 
-    testCompile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.7.22'
-    testCompile project(":testingcomponents")
-    testCompile 'com.google.truth:truth:0.33'
-    testCompile ("android.arch.core:core-testing:$versions.lifecycle", {
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.7.22'
+    testImplementation project(":testingcomponents")
+    testImplementation 'com.google.truth:truth:0.33'
+    testImplementation ("android.arch.core:core-testing:$versions.lifecycle", {
         exclude group: 'com.android.support', module: 'support-compat'
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-core-utils'
