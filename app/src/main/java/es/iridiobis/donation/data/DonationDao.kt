@@ -1,7 +1,7 @@
 package es.iridiobis.donation.data
 
-import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.*
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import es.iridiobis.donation.domain.Donation
 
 @Dao

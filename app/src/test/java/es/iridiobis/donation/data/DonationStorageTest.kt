@@ -1,6 +1,6 @@
 package es.iridiobis.donation.data
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.google.common.truth.Truth
 import es.iridiobis.donation.domain.Donation
 import io.reactivex.subscribers.TestSubscriber

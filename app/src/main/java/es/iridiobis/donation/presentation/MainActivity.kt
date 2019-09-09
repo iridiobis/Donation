@@ -1,19 +1,19 @@
 package es.iridiobis.donation.presentation
 
-import android.arch.lifecycle.LifecycleActivity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import android.app.Activity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.widget.Toolbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.*
 import es.iridiobis.donation.DonationApp
 import es.iridiobis.donation.R
 import es.iridiobis.donation.domain.Donation
@@ -22,7 +22,7 @@ import java.util.Date
 import javax.inject.Inject
 
 
-class MainActivity : LifecycleActivity(), NavigationView.OnNavigationItemSelectedListener, DonationDatePicker.DonationDateListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, DonationDatePicker.DonationDateListener {
     override fun onDateChanged(date: Long) {
         viewModel.verify(date).observe(this, Observer { result -> donationDatePicker?.showInvalideDate(!(result!!.successful)) })
     }

@@ -1,7 +1,7 @@
 package es.iridiobis.donation.presentation
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import es.iridiobis.donation.domain.*
 import javax.inject.Inject
 

@@ -1,6 +1,6 @@
 package es.iridiobis.donation.domain
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import com.google.common.truth.Truth
 import es.iridiobis.testingcomponents.asLiveData
 import es.iridiobis.testingcomponents.retrieveValue

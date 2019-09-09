@@ -36,7 +36,7 @@ def versionMinor = 1
 def versionBuild = (gitCount?.trim()) ? gitCount.toInteger() : 0
 
 ext {
-    minSdkVersion = 21
+    minSdkVersion = 24
     targetSdkVersion = 29
     buildToolsVersion = '29.0.0'
 

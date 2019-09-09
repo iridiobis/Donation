@@ -1,6 +1,6 @@
 package es.iridiobis.donation.domain
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import io.reactivex.Completable
 
 interface DonationRepository {

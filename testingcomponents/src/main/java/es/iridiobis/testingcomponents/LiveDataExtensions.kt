@@ -1,8 +1,8 @@
 package es.iridiobis.testingcomponents
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Observer
 
 /**
  * Retrieves the NON NULL value of a live data. Use only on live data instances that are gonna
