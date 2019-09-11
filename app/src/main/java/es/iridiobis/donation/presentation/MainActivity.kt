@@ -1,6 +1,5 @@
 package es.iridiobis.donation.presentation
 
-import android.app.Activity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
