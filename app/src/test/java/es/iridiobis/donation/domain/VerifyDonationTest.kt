@@ -1,46 +1,52 @@
 package es.iridiobis.donation.domain
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.common.truth.Truth
-import es.iridiobis.testingcomponents.asLiveData
-import es.iridiobis.testingcomponents.retrieveValue
-import org.junit.Rule
+import com.google.common.truth.Truth.assertThat
+import com.nhaarman.mockitokotlin2.*
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
+import org.mockito.ArgumentMatchers.anyLong
 
 class VerifyDonationTest {
 
-    @get:Rule
-    val instantExecutorRule = InstantTaskExecutorRule()
-
     @Test
-    fun verify_noDonationsInRange_success() {
-        val repo = Mockito.mock(DonationRepository::class.java)
-        val donations = ArrayList<Donation>()
-        Mockito.`when`(repo.loadDonationsInRange(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong())).thenReturn(donations.asLiveData())
-        val sut = VerifyDonation(repo)
+    fun `verify should success when no donations in range`() {
+        runBlocking {
+            val now = System.currentTimeMillis() - System.currentTimeMillis() % MILLIS_PER_DAY
+            val donations = ArrayList<Donation>()
 
-        val result = sut(System.currentTimeMillis()).retrieveValue()
+            val repo = mock<DonationRepository> {
+                onBlocking { loadDonationsInRange(anyLong(), anyLong()) } doReturn donations
+            }
 
-        Truth.assertThat(result.successful).isTrue()
-        Truth.assertThat(result.donations).isEmpty()
+            val sut = VerifyDonation(repo)
+
+            val result = sut(now)
+
+            assertThat(result.successful).isTrue()
+            assertThat(result.donations).isEmpty()
+        }
+
     }
 
     @Test
-    fun verify_donationsInRange_invalid() {
-        val repo = Mockito.mock(DonationRepository::class.java)
-        val now = System.currentTimeMillis() - System.currentTimeMillis() % MILLIS_PER_DAY
-        val donations = listOf(
-                Donation(now - MILLIS_PER_TWO_MONTHS / 2),
-                Donation(now + MILLIS_PER_TWO_MONTHS / 2))
-        Mockito.`when`(repo.loadDonationsInRange(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong())).thenReturn(donations.asLiveData())
-        val sut = VerifyDonation(repo)
+    fun `add should fail when there are donations in range`() {
+        runBlocking {
+            val now = System.currentTimeMillis() - System.currentTimeMillis() % MILLIS_PER_DAY
+            val donation = Donation(now)
+            val donations = listOf(
+                    Donation(now - MILLIS_PER_TWO_MONTHS / 2),
+                    Donation(now + MILLIS_PER_TWO_MONTHS / 2))
+            val repo = mock<DonationRepository> {
+                onBlocking { loadDonationsInRange(anyLong(), anyLong()) } doReturn donations
+            }
 
-        val result = sut(now).retrieveValue()
+            val sut = AddDonation(repo)
 
-        Truth.assertThat(result.successful).isFalse()
-        Truth.assertThat(result.donations).isEqualTo(donations)
+            val result = sut(donation)
+
+            assertThat(result.successful).isFalse()
+            assertThat(result.donations).isEqualTo(donations)
+        }
 
     }
 

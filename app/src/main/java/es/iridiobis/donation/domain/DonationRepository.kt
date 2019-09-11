@@ -10,12 +10,7 @@ interface DonationRepository {
      */
     fun loadDonationsSince(date: Long): LiveData<List<Donation>>
 
-    /**
-     * Provide the donations in the given range.
-     */
-    fun loadDonationsInRange(date: Long, range: Long): LiveData<List<Donation>>
-
-    fun loadDonationsInRangeSync(date: Long, range: Long): List<Donation>
+    suspend fun loadDonationsInRange(date: Long, range: Long): List<Donation>
 
     suspend fun add(donation: Donation)
 

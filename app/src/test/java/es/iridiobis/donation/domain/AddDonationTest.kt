@@ -1,11 +1,7 @@
 package es.iridiobis.donation.domain
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
-import io.reactivex.android.plugins.RxAndroidPlugins
-import io.reactivex.plugins.RxJavaPlugins
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.runBlocking
 import org.junit.*
 import org.mockito.ArgumentMatchers.anyLong
@@ -13,24 +9,13 @@ import org.mockito.Mockito.never
 
 class AddDonationTest {
 
-    @get:Rule
-    val rule = InstantTaskExecutorRule()
-
-    @Before
-    fun setUp() {
-        RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
-        RxJavaPlugins.setComputationSchedulerHandler { Schedulers.trampoline() }
-        RxJavaPlugins.setNewThreadSchedulerHandler { Schedulers.trampoline() }
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
-    }
-
     @Test
     fun `add should success when no donations in range`() {
         val donation = Donation(System.currentTimeMillis() - System.currentTimeMillis() % MILLIS_PER_DAY)
         val donations = ArrayList<Donation>()
 
         val repo = mock<DonationRepository> {
-            on { loadDonationsInRangeSync(anyLong(), anyLong()) } doReturn donations
+            onBlocking { loadDonationsInRange(anyLong(), anyLong()) } doReturn donations
         }
 
         val sut = AddDonation(repo)
@@ -53,7 +38,7 @@ class AddDonationTest {
                 Donation(now - MILLIS_PER_TWO_MONTHS / 2),
                 Donation(now + MILLIS_PER_TWO_MONTHS / 2))
         val repo = mock<DonationRepository> {
-            on { loadDonationsInRangeSync(anyLong(), anyLong()) } doReturn donations
+            onBlocking { loadDonationsInRange(anyLong(), anyLong()) } doReturn donations
         }
 
         val sut = AddDonation(repo)

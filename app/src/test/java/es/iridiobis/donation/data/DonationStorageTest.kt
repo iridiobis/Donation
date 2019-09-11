@@ -3,7 +3,7 @@ package es.iridiobis.donation.data
 import androidx.lifecycle.LiveData
 import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.*
 import es.iridiobis.donation.domain.Donation
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -34,27 +34,17 @@ class DonationStorageTest {
     }
 
     @Test
-    fun loadDonationInRange_default() {
-        val date = 1L
-        val range = 2L
-        val expectedResult = Mockito.mock(LiveData::class.java) as LiveData<List<Donation>>
-        Mockito.`when`(donationDao.loadDonationsInRange(date, range)).thenReturn(expectedResult)
-
-        val result = donationStorage.loadDonationsInRange(date, range)
-
-        Truth.assertThat(result).isEqualTo(expectedResult)
-    }
-
-    @Test
     fun `loadDonationInRange should return the donations in the range`() {
-        val date = 1L
-        val range = 2L
-        val expectedResult = emptyList<Donation>()
-        Mockito.`when`(donationDao.loadDonationsInRangeSync(date, range)).thenReturn(expectedResult)
+        runBlocking {
+            val date = 1L
+            val range = 2L
+            val expectedResult = emptyList<Donation>()
+            whenever(donationDao.loadDonationsInRangeSync(date, range)).doReturn(expectedResult)
 
-        val result = donationStorage.loadDonationsInRangeSync(date, range)
+            val result = donationStorage.loadDonationsInRange(date, range)
 
-        assertThat(result).isEqualTo(expectedResult)
+            assertThat(result).isEqualTo(expectedResult)
+        }
     }
 
     @Test

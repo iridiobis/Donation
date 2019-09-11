@@ -12,9 +12,7 @@ class DonationStorage @Inject constructor(val donationDao: DonationDao) : Donati
 
     override fun loadDonationsSince(date: Long): LiveData<List<Donation>> = donationDao.loadDonationsSince(date)
 
-    override fun loadDonationsInRange(date: Long, range: Long): LiveData<List<Donation>> = donationDao.loadDonationsInRange(date, range)
-
-    override fun loadDonationsInRangeSync(date: Long, range: Long): List<Donation> = donationDao.loadDonationsInRangeSync(date, range)
+    override suspend fun loadDonationsInRange(date: Long, range: Long): List<Donation> = donationDao.loadDonationsInRangeSync(date, range)
 
     override suspend fun add(donation: Donation) = donationDao.insertDonation(donation)
 
