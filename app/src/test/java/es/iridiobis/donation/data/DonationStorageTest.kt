@@ -59,15 +59,6 @@ class DonationStorageTest {
     }
 
     @Test
-    fun addDonation_default() {
-        val donation = Donation(1L)
-
-        donationStorage.addDonation(donation).subscribe()
-
-        Mockito.verify(donationDao).insertDonation(donation)
-    }
-
-    @Test
     fun `addDonation should insert the donation`() {
         val donation = Donation(1L)
 

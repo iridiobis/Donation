@@ -17,11 +17,6 @@ interface DonationRepository {
 
     fun loadDonationsInRangeSync(date: Long, range: Long): List<Donation>
 
-    /**
-     * Add a donation to the repository
-     */
-    fun addDonation(donation : Donation) : Completable
-
     fun addDonationSync(donation: Donation)
 
 }
