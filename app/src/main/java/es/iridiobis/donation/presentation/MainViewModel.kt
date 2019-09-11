@@ -1,8 +1,8 @@
 package es.iridiobis.donation.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import es.iridiobis.donation.domain.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -14,5 +14,8 @@ class MainViewModel @Inject constructor(
 
     fun verify(date : Long) : LiveData<DonationResult> = verifyDonationUseCase.verify(date)
 
-    fun add(date : Long) : LiveData<DonationResult> = addDonationUseCase.add(Donation(date))
+    fun add(date : Long) : LiveData<DonationResult> = liveData {
+        addDonationUseCase.suspendedAdd(Donation(date))
+    }
+
 }
