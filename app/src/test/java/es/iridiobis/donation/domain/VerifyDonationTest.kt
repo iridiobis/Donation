@@ -19,9 +19,9 @@ class VerifyDonationTest {
         val repo = Mockito.mock(DonationRepository::class.java)
         val donations = ArrayList<Donation>()
         Mockito.`when`(repo.loadDonationsInRange(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong())).thenReturn(donations.asLiveData())
-        val useCase = VerifyDonation(repo)
+        val sut = VerifyDonation(repo)
 
-        val result = useCase.verify(System.currentTimeMillis()).retrieveValue()
+        val result = sut(System.currentTimeMillis()).retrieveValue()
 
         Truth.assertThat(result.successful).isTrue()
         Truth.assertThat(result.donations).isEmpty()
@@ -35,9 +35,9 @@ class VerifyDonationTest {
                 Donation(now - MILLIS_PER_TWO_MONTHS / 2),
                 Donation(now + MILLIS_PER_TWO_MONTHS / 2))
         Mockito.`when`(repo.loadDonationsInRange(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong())).thenReturn(donations.asLiveData())
-        val useCase = VerifyDonation(repo)
+        val sut = VerifyDonation(repo)
 
-        val result = useCase.verify(now).retrieveValue()
+        val result = sut(now).retrieveValue()
 
         Truth.assertThat(result.successful).isFalse()
         Truth.assertThat(result.donations).isEqualTo(donations)

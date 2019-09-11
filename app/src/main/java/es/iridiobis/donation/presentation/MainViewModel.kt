@@ -13,7 +13,7 @@ class MainViewModel @Inject constructor(
 
     val nextDonation : LiveData<Donation> = nextDonationUseCase.nextDonation
 
-    fun verify(date : Long) : LiveData<DonationResult> = verifyDonation.verify(date)
+    fun verify(date : Long) : LiveData<DonationResult> = verifyDonation(date)
 
     fun add(date : Long) : LiveData<DonationResult> = liveData(Dispatchers.IO) {
         addDonation(Donation(date))

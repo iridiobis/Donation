@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class VerifyDonation @Inject constructor(private val donationRepository: DonationRepository) {
 
-    fun verify(date : Long) : LiveData<DonationResult> {
+    operator fun invoke(date : Long) : LiveData<DonationResult> {
         return Transformations.map(
                 donationRepository.loadDonationsInRange(date, MILLIS_PER_TWO_MONTHS),
                 { donationsInRange -> DonationResult(donationsInRange.isEmpty(), donationsInRange) }
