@@ -8,12 +8,12 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
         nextDonationUseCase: NextDonationUseCase,
-        private val verifyDonationUseCase: VerifyDonationUseCase,
+        private val verifyDonation: VerifyDonation,
         private val addDonation: AddDonation)  : ViewModel() {
 
     val nextDonation : LiveData<Donation> = nextDonationUseCase.nextDonation
 
-    fun verify(date : Long) : LiveData<DonationResult> = verifyDonationUseCase.verify(date)
+    fun verify(date : Long) : LiveData<DonationResult> = verifyDonation.verify(date)
 
     fun add(date : Long) : LiveData<DonationResult> = liveData(Dispatchers.IO) {
         addDonation(Donation(date))

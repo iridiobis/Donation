@@ -9,7 +9,7 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 
-class VerifyDonationUseCaseTest {
+class VerifyDonationTest {
 
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
@@ -19,7 +19,7 @@ class VerifyDonationUseCaseTest {
         val repo = Mockito.mock(DonationRepository::class.java)
         val donations = ArrayList<Donation>()
         Mockito.`when`(repo.loadDonationsInRange(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong())).thenReturn(donations.asLiveData())
-        val useCase = VerifyDonationUseCase(repo)
+        val useCase = VerifyDonation(repo)
 
         val result = useCase.verify(System.currentTimeMillis()).retrieveValue()
 
@@ -35,7 +35,7 @@ class VerifyDonationUseCaseTest {
                 Donation(now - MILLIS_PER_TWO_MONTHS / 2),
                 Donation(now + MILLIS_PER_TWO_MONTHS / 2))
         Mockito.`when`(repo.loadDonationsInRange(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong())).thenReturn(donations.asLiveData())
-        val useCase = VerifyDonationUseCase(repo)
+        val useCase = VerifyDonation(repo)
 
         val result = useCase.verify(now).retrieveValue()
 
