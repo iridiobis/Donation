@@ -5,7 +5,6 @@ import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.verify
 import es.iridiobis.donation.domain.Donation
-import io.reactivex.subscribers.TestSubscriber
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -60,10 +59,12 @@ class DonationStorageTest {
 
     @Test
     fun `addDonation should insert the donation`() {
-        val donation = Donation(1L)
+        runBlocking {
+            val donation = Donation(1L)
 
-        donationStorage.addDonationSync(donation)
+            donationStorage.add(donation)
 
-        verify(donationDao).insertDonation(donation)
+            verify(donationDao).insertDonation(donation)
+        }
     }
 }

@@ -7,7 +7,7 @@ class AddDonation @Inject constructor(val donationRepository: DonationRepository
     suspend operator fun invoke(donation: Donation): DonationResult {
         val inRange = donationRepository.loadDonationsInRangeSync(donation.date, MILLIS_PER_TWO_MONTHS)
         if (inRange.isEmpty()) {
-            donationRepository.addDonationSync(donation)
+            donationRepository.add(donation)
         }
         return DonationResult(inRange.isEmpty(), inRange)
     }

@@ -40,7 +40,7 @@ class AddDonationTest {
 
             assertThat(result.successful).isTrue()
             assertThat(result.donations).isEmpty()
-            verify(repo).addDonationSync(donation)
+            verify(repo).add(donation)
         }
 
     }
@@ -63,7 +63,7 @@ class AddDonationTest {
 
             assertThat(result.successful).isFalse()
             assertThat(result.donations).isEqualTo(donations)
-            verify(repo, never()).addDonationSync(donation)
+            verify(repo, never()).add(donation)
         }
 
     }

@@ -54,6 +54,7 @@ dependencies {
 
     //Room
     implementation 'androidx.room:room-runtime:2.1.0'
+    implementation "androidx.room:room-ktx:2.1.0"
     kapt 'androidx.room:room-compiler:2.1.0'
 
     //Android Architecture Components: lifecycle, live data, view model
@@ -71,6 +72,7 @@ dependencies {
     androidTestImplementation 'com.google.truth:truth:0.35'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.0"
     androidTestImplementation project(":testingcomponents")
 
     testImplementation 'junit:junit:4.12'

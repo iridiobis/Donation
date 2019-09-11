@@ -8,7 +8,7 @@ import es.iridiobis.donation.domain.Donation
 interface DonationDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertDonation(donation: Donation)
+    suspend fun insertDonation(donation: Donation)
 
     @Delete
     fun deleteDonation(donation: Donation)

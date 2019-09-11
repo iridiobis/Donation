@@ -17,6 +17,6 @@ interface DonationRepository {
 
     fun loadDonationsInRangeSync(date: Long, range: Long): List<Donation>
 
-    fun addDonationSync(donation: Donation)
+    suspend fun add(donation: Donation)
 
 }
