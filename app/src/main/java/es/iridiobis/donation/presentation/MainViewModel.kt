@@ -10,6 +10,7 @@ class MainViewModel @Inject constructor(
         nextDonationUseCase: NextDonationUseCase,
         private val verifyDonationUseCase: VerifyDonationUseCase,
         private val addDonation: AddDonation)  : ViewModel() {
+
     val nextDonation : LiveData<Donation> = nextDonationUseCase.nextDonation
 
     fun verify(date : Long) : LiveData<DonationResult> = verifyDonationUseCase.verify(date)

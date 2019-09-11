@@ -63,12 +63,14 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha04'
     kapt 'androidx.lifecycle:lifecycle-compiler:2.1.0'
 
-    androidTestImplementation 'androidx.annotation:annotation:1.0.0'
-    androidTestImplementation 'androidx.test:runner:1.1.0'
-    androidTestImplementation 'androidx.test:rules:1.1.0'
-    androidTestImplementation 'androidx.room:room-testing:2.0.0'
+    androidTestImplementation 'androidx.annotation:annotation:1.1.0'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'androidx.room:room-testing:2.1.0'
     androidTestImplementation 'org.mockito:mockito-android:2.7.22'
-    androidTestImplementation 'com.google.truth:truth:0.33'
+    androidTestImplementation 'com.google.truth:truth:0.35'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
     androidTestImplementation project(":testingcomponents")
 
     testImplementation 'junit:junit:4.12'

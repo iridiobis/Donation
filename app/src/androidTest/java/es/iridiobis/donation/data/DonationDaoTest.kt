@@ -1,14 +1,15 @@
 package es.iridiobis.donation.data
 
+import android.content.Context
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth
 import es.iridiobis.donation.domain.Donation
 import es.iridiobis.testingcomponents.retrieveValue
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 import java.io.IOException
 
@@ -23,9 +24,12 @@ class DonationDaoTest {
     private lateinit var donationDao: DonationDao
     private lateinit var dataBase: DonationDatabase
 
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
+
     @Before
     fun createDb() {
-        val context = InstrumentationRegistry.getTargetContext()
+        val context = ApplicationProvider.getApplicationContext<Context>()
         dataBase = Room.inMemoryDatabaseBuilder(context, DonationDatabase::class.java).build()
         donationDao = dataBase.donationDao()
     }
